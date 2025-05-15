@@ -87,7 +87,9 @@ Example documents:
 ```
 
 Use: 
+
 Base64 Converter: https://www.base64-image.de/
+
 UUID Generator: https://www.uuidgenerator.net/version4
 
 Add at least three visualizations with different UUIDs.
