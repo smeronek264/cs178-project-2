@@ -1,1 +1,1 @@
-# cs178 Project 2 Report
+# CS178 Project 2 Report
