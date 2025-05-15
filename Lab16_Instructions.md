@@ -102,7 +102,7 @@ Add at least three visualizations with different UUIDs.
 
 1. Go to Azure Portal, search for **Function App**, click **Create**.
 2. Choose the same resource group.
-3. Function App name: `BadVisulazationFunctionApp`
+3. Function App name: `BadVisualizationFunctionApp`
 4. Runtime stack: Python or Node.js
 5. Plan type: Consumption
 6. After creation, click on the Function App > Functions > Create Function.
@@ -114,7 +114,7 @@ Add at least three visualizations with different UUIDs.
 2. Open a new folder, open terminal:
 
    ```bash
-   func init BadVisulazationFunctionApp --python
+   func init BadVisualizationFunctionApp --python
    cd BadVisulazationFunctionApp
    func new --name GetRandomVis --template "HTTP trigger"
    ```
