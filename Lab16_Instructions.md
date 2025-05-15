@@ -16,12 +16,16 @@ Create an automated system using Microsoft Azure Logic Apps that sends a daily "
 
 * An active Azure account
 * A Gmail account
-* A joke (or several) for testing
+* A visulaization (or several) for testing
 
 ### Optional:
 
 * Visual Studio Code with Azure Functions extension
 * Python or Node.js development environment
+
+### Resource Group:
+Make Sure you have an active resource group for the Lab.
+   * Call is `intials-cs178-lab16-resource`
 
 ---
 
