@@ -1,0 +1,194 @@
+# Lab #16 (Azure Version)
+
+## Serverless Computing – Azure Logic Apps with Gmail and Azure Functions
+
+### Objective
+
+Create an automated system using Microsoft Azure Logic Apps that sends a daily "Joke of the Day" email using a Gmail account. This lab replaces AWS Lambda and SNS with Azure Logic Apps and Gmail. Jokes will be stored and retrieved dynamically from Azure Cosmos DB using an Azure Function.
+
+---
+
+## Section 1: Prerequisites
+
+### Required Tools:
+
+* An active Azure account
+* A Gmail account
+* A joke (or several) for testing
+
+### Optional:
+
+* Visual Studio Code with Azure Functions extension
+* Python or Node.js development environment
+
+---
+
+## Section 2: Create a Logic App
+
+### Steps:
+
+1. Go to the Azure Portal.
+2. Search for **Logic Apps** in the search bar.
+3. Click **Create**.
+4. Fill out the form:
+
+   * **Subscription**: Your Azure subscription
+   * **Resource group**: Create new or select existing
+   * **Logic App name**: `SendJokeLogicApp`
+   * **Region**: Choose the closest region
+   * **Plan type**: Consumption
+5. Click **Review + Create**, then **Create**.
+
+---
+
+## Section 3: Add Recurrence Trigger
+
+1. Open the Logic App Designer.
+2. Select the **Recurrence** trigger.
+3. Configure it as:
+
+   * **Interval**: `1`
+   * **Frequency**: `Day`
+4. Expand **Advanced options**:
+
+   * Set **Start time** to `07:00` UTC if you want the email sent at 7:00 AM daily.
+
+---
+
+## Section 4: Create Azure Cosmos DB Table
+
+1. Go to Azure Portal, search for **Cosmos DB**.
+2. Click **Create**, and choose **NoSQL** API.
+3. Set a unique name and resource group.
+4. Once created, go to the **Data Explorer** section.
+5. Create a new **Database** called `JokesDB`.
+6. Within the database, create a **Container**:
+
+   * **Container ID**: `Jokes`
+   * **Partition key**: `/uuid`
+7. Insert documents manually using the Data Explorer:
+
+Example documents:
+
+```json
+{
+  "uuid": "1",
+  "joke": "Why did the scarecrow win an award? Because he was outstanding in his field."
+}
+```
+
+Add at least three jokes with different UUIDs.
+
+---
+
+## Section 5: Create an Azure Function to Retrieve Random Joke
+
+### Option A: Using Azure Portal
+
+1. Go to Azure Portal, search for **Function App**, click **Create**.
+2. Choose the same resource group.
+3. Function App name: `JokeFunctionApp`
+4. Runtime stack: Python or Node.js
+5. Plan type: Consumption
+6. After creation, click on the Function App > Functions > Create Function.
+7. Choose **HTTP trigger**, name it `GetRandomJoke`, choose **Anonymous**.
+
+### Option B: Using VS Code (Recommended for Development)
+
+1. Install Azure Functions extension in VS Code.
+2. Open a new folder, open terminal:
+
+   ```bash
+   func init JokeFunctionApp --python
+   cd JokeFunctionApp
+   func new --name GetRandomJoke --template "HTTP trigger"
+   ```
+3. Replace `__init__.py` content with:
+
+```python
+import logging
+import azure.functions as func
+import random
+import json
+import os
+from azure.cosmos import CosmosClient
+
+endpoint = os.environ["COSMOS_ENDPOINT"]
+key = os.environ["COSMOS_KEY"]
+database_name = "JokesDB"
+container_name = "Jokes"
+
+client = CosmosClient(endpoint, key)
+database = client.get_database_client(database_name)
+container = database.get_container_client(container_name)
+
+def main(req: func.HttpRequest) -> func.HttpResponse:
+    query = "SELECT * FROM c"
+    items = list(container.query_items(query=query, enable_cross_partition_query=True))
+    joke = random.choice(items)
+    return func.HttpResponse(json.dumps({"joke": joke["joke"]}), mimetype="application/json")
+```
+
+4. Add `COSMOS_ENDPOINT` and `COSMOS_KEY` as environment variables in your Azure Function configuration.
+5. Deploy to Azure using VS Code Azure extension.
+
+---
+
+## Section 6: Update Logic App to Use Azure Function
+
+1. In Logic App Designer, click **+ New Step** after the recurrence trigger.
+2. Search for **Azure Function**.
+3. Choose your Function App and select the `GetRandomJoke` function.
+4. No additional parameters are required.
+5. Add another **step**, search for **Gmail**, choose **Send Email (V2)**.
+6. Configure Gmail:
+
+   * **To**: `csprofmoore@gmail.com`
+   * **Subject**: `🤣 Joke of the Day`
+   * **Body**: Click in the body field and insert the joke from the Azure Function's response (use dynamic content).
+
+---
+
+## Section 7: Test the Logic App
+
+1. In the Logic App Designer, click **Run Trigger**.
+2. Go to your Gmail inbox.
+3. Confirm that the email with a joke was received.
+
+---
+
+## Section 8: Final Steps
+
+* Confirm schedule is set for 7:00 AM daily.
+* Confirm email is reaching intended recipient(s).
+* Optionally, add more jokes or use a more advanced query to personalize jokes.
+
+---
+
+## Bonus (Optional): Add Student Name to Subject
+
+* Before the Gmail step, add a **Compose** step.
+* Enter a value like: `Joke of the Day from Jane Doe`
+* Use the output of this Compose step as the email subject in the Gmail action.
+
+---
+
+## Submission Instructions
+
+1. Take a screenshot of your Logic App Designer and Azure Function code.
+2. Trigger the workflow manually.
+3. Submit the screenshot to your course portal.
+4. Ensure Professor Moore receives an email with your joke.
+
+---
+
+## Additional Resources
+
+* [Azure Logic Apps Documentation](https://learn.microsoft.com/en-us/azure/logic-apps/)
+* [Azure Functions Documentation](https://learn.microsoft.com/en-us/azure/azure-functions/)
+* [Gmail Connector for Logic Apps](https://learn.microsoft.com/en-us/connectors/gmail/)
+* [Azure Cosmos DB Documentation](https://learn.microsoft.com/en-us/azure/cosmos-db/)
+
+---
+
+End of Lab
