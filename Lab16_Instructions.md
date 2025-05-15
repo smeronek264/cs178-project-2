@@ -1,10 +1,12 @@
 # Lab #16 (Azure Version)
 
+##DISCLAIMER: The Lab were written by CHATGPT, this is only giving the step-by-step with not photos.  Included is a link to a Google Doc showing a more indepth instruction with photos.
+
 ## Serverless Computing – Azure Logic Apps with Gmail and Azure Functions
 
 ### Objective
 
-Create an automated system using Microsoft Azure Logic Apps that sends a daily "Joke of the Day" email using a Gmail account. This lab replaces AWS Lambda and SNS with Azure Logic Apps and Gmail. Jokes will be stored and retrieved dynamically from Azure Cosmos DB using an Azure Function.
+Create an automated system using Microsoft Azure Logic Apps that sends a daily "Bad Visualization of the Day" email using a Gmail account. This lab replaces AWS Lambda and SNS with Azure Logic Apps and Gmail. Jokes will be stored and retrieved dynamically from Azure Cosmos DB using an Azure Function.
 
 ---
 
@@ -61,10 +63,10 @@ Create an automated system using Microsoft Azure Logic Apps that sends a daily "
 2. Click **Create**, and choose **NoSQL** API.
 3. Set a unique name and resource group.
 4. Once created, go to the **Data Explorer** section.
-5. Create a new **Database** called `JokesDB`.
+5. Create a new **Database** called `BadVisualizations`.
 6. Within the database, create a **Container**:
 
-   * **Container ID**: `Jokes`
+   * **Container ID**: `Visualizations`
    * **Partition key**: `/uuid`
 7. Insert documents manually using the Data Explorer:
 
@@ -77,21 +79,21 @@ Example documents:
 }
 ```
 
-Add at least three jokes with different UUIDs.
+Add at least three visualizations with different UUIDs.
 
 ---
 
-## Section 5: Create an Azure Function to Retrieve Random Joke
+## Section 5: Create an Azure Function to Retrieve Random Visualization
 
 ### Option A: Using Azure Portal
 
 1. Go to Azure Portal, search for **Function App**, click **Create**.
 2. Choose the same resource group.
-3. Function App name: `JokeFunctionApp`
+3. Function App name: `BadVisulazationFunctionApp`
 4. Runtime stack: Python or Node.js
 5. Plan type: Consumption
 6. After creation, click on the Function App > Functions > Create Function.
-7. Choose **HTTP trigger**, name it `GetRandomJoke`, choose **Anonymous**.
+7. Choose **HTTP trigger**, name it `GetRandomVis`, choose **Anonymous**.
 
 ### Option B: Using VS Code (Recommended for Development)
 
@@ -99,9 +101,9 @@ Add at least three jokes with different UUIDs.
 2. Open a new folder, open terminal:
 
    ```bash
-   func init JokeFunctionApp --python
-   cd JokeFunctionApp
-   func new --name GetRandomJoke --template "HTTP trigger"
+   func init BadVisulazationFunctionApp --python
+   cd BadVisulazationFunctionApp
+   func new --name GetRandomVis --template "HTTP trigger"
    ```
 3. Replace `__init__.py` content with:
 
@@ -115,8 +117,8 @@ from azure.cosmos import CosmosClient
 
 endpoint = os.environ["COSMOS_ENDPOINT"]
 key = os.environ["COSMOS_KEY"]
-database_name = "JokesDB"
-container_name = "Jokes"
+database_name = "BadVisualizations"
+container_name = "Visualizations"
 
 client = CosmosClient(endpoint, key)
 database = client.get_database_client(database_name)
@@ -138,13 +140,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
 1. In Logic App Designer, click **+ New Step** after the recurrence trigger.
 2. Search for **Azure Function**.
-3. Choose your Function App and select the `GetRandomJoke` function.
+3. Choose your Function App and select the `GetRandomVis` function.
 4. No additional parameters are required.
 5. Add another **step**, search for **Gmail**, choose **Send Email (V2)**.
 6. Configure Gmail:
 
-   * **To**: `csprofmoore@gmail.com`
-   * **Subject**: `🤣 Joke of the Day`
+   * **To**: `sophie.meronek@drake.edu@gmail.com`
+   * **Subject**: `Bad Visualization`
    * **Body**: Click in the body field and insert the joke from the Azure Function's response (use dynamic content).
 
 ---
@@ -165,20 +167,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
 ---
 
-## Bonus (Optional): Add Student Name to Subject
-
-* Before the Gmail step, add a **Compose** step.
-* Enter a value like: `Joke of the Day from Jane Doe`
-* Use the output of this Compose step as the email subject in the Gmail action.
-
----
-
 ## Submission Instructions
 
 1. Take a screenshot of your Logic App Designer and Azure Function code.
 2. Trigger the workflow manually.
 3. Submit the screenshot to your course portal.
-4. Ensure Professor Moore receives an email with your joke.
+4. Ensure Sophie receives an email with your visualization.
 
 ---
 
@@ -190,5 +184,3 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 * [Azure Cosmos DB Documentation](https://learn.microsoft.com/en-us/azure/cosmos-db/)
 
 ---
-
-End of Lab
