@@ -32,14 +32,14 @@ Create an automated system using Microsoft Azure Logic Apps that sends a daily "
 1. Go to the Azure Portal.
 2. Search for **Logic Apps** in the search bar.
 3. Click **Create**.
-4. Fill out the form:
+   * **Hosting Option**: Click on Multi-tenant.
+5. Fill out the form:
 
    * **Subscription**: Your Azure subscription
    * **Resource group**: Create new or select existing
-   * **Logic App name**: `SendJokeLogicApp`
-   * **Region**: Choose the closest region
-   * **Plan type**: Consumption
-5. Click **Review + Create**, then **Create**.
+   * **Logic App name**: `SendVisLogicApp`
+   * **Region**: East US
+6. Click **Review + Create**, then **Create**.
 
 ---
 
@@ -53,7 +53,10 @@ Create an automated system using Microsoft Azure Logic Apps that sends a daily "
    * **Frequency**: `Day`
 4. Expand **Advanced options**:
 
-   * Set **Start time** to `07:00` UTC if you want the email sent at 7:00 AM daily.
+   * Set **Time Zone** to `Central Time`.
+   * Set **Start time** to `2025-05-15T00:00:00Z` to start sending the emails.
+   * Set **At These Hours** to `7` for 7:00AM
+5. Click Save
 
 ---
 
