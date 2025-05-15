@@ -68,7 +68,7 @@ Make Sure you have an active resource group for the Lab.
 
 1. Go to Azure Portal, search for **Cosmos DB**.
 2. Click **Create**, and choose **NoSQL** API.
-3. Set a unique name and resource group.
+3. Enter the following information as seen below:
 4. Once created, go to the **Data Explorer** section.
 5. Create a new **Database** called `BadVisualizations`.
 6. Within the database, create a **Container**:
@@ -82,9 +82,13 @@ Example documents:
 ```json
 {
   "uuid": "1",
-  "joke": "Why did the scarecrow win an award? Because he was outstanding in his field."
+  "image": "Converted Image to base64"
 }
 ```
+
+Use: 
+Base64 Converter: https://www.base64-image.de/
+UUID Generator: https://www.uuidgenerator.net/version4
 
 Add at least three visualizations with different UUIDs.
 
