@@ -118,31 +118,7 @@ Add at least three visualizations with different UUIDs.
    cd BadVisulazationFunctionApp
    func new --name GetRandomVis --template "HTTP trigger"
    ```
-3. Replace `__init__.py` content with:
-
-```python
-import logging
-import azure.functions as func
-import random
-import json
-import os
-from azure.cosmos import CosmosClient
-
-endpoint = os.environ["COSMOS_ENDPOINT"]
-key = os.environ["COSMOS_KEY"]
-database_name = "BadVisualizations"
-container_name = "Visualizations"
-
-client = CosmosClient(endpoint, key)
-database = client.get_database_client(database_name)
-container = database.get_container_client(container_name)
-
-def main(req: func.HttpRequest) -> func.HttpResponse:
-    query = "SELECT * FROM c"
-    items = list(container.query_items(query=query, enable_cross_partition_query=True))
-    joke = random.choice(items)
-    return func.HttpResponse(json.dumps({"joke": joke["joke"]}), mimetype="application/json")
-```
+3. Replace `function_app.py` content with:
 
 4. Add `COSMOS_ENDPOINT` and `COSMOS_KEY` as environment variables in your Azure Function configuration.
 5. Deploy to Azure using VS Code Azure extension.
