@@ -1,6 +1,6 @@
 # Lab #16 (Azure Version)
 
-## DISCLAIMER: The Lab were written by CHATGPT, this is only giving the step-by-step with not photos.  Included is a link to a Google Doc showing a more indepth instruction with photos.
+## DISCLAIMER: The Lab were written by CHATGPT, this is only giving the step-by-step with not photos.  Included is a link to a Google Doc showing a more indepth instruction with photos.  https://docs.google.com/document/d/1M1ti1J-qb45ZNuYtd-B7fetRdyHoEbDtt2zSXqWbCQE/edit?usp=sharing
 
 ## Serverless Computing – Azure Logic Apps with Gmail and Azure Functions
 
