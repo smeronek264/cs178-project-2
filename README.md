@@ -118,7 +118,7 @@ Add at least three visualizations with different UUIDs.
    cd BadVisulazationFunctionApp
    func new --name GetRandomVis --template "HTTP trigger"
    ```
-3. Replace `function_app.py` content with:
+3. Replace `function_app.py` content with `lab16-function_app.py`
 
 4. Add `COSMOS_ENDPOINT` and `COSMOS_KEY` as environment variables in your Azure Function configuration.
 5. Deploy to Azure using VS Code Azure extension.
